@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: spring-boot-admin
+
+server:
+  port: 3333
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}
+    preferIpAddress: true
+  client:
+    registry-fetch-interval-seconds: 10
+    serviceUrl:
+      defaultZone: "http://localhost:8761/eureka/"
+
+management:
+  server:
+    port: 3334
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      showDetails: ALWAYS
+
+---
+
+spring:
+  profiles: test-docker-compose
+  cloud:
+    inetutils:
+      preferredNetworks:
+        - 10.0.10
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
